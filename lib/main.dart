@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:myapp/Pages/ahorros_page.dart';
 import 'package:myapp/Pages/home_page.dart';
+import 'package:myapp/Pages/metas_page.dart';
+import 'package:myapp/Pages/presupuesto_page.dart';
+import 'package:myapp/Security/login_page.dart';
+import 'package:myapp/Security/registration.dart';
 
 void main() {
   runApp(const AhorroTrackApp());
@@ -14,10 +19,12 @@ class AhorroTrackApp extends StatelessWidget {
       title: 'AhorroTrack',
       initialRoute: '/',
       routes: {
-        '/':(context)=> const HomePage(),
-        // '/':(context)=> AhorroPage(),
-        // '/':(context)=> PresupuestoPage(),
-        // '/':(context)=> MetasPage(),
+        '/':(context)=> const LoginPage(),
+        '/home':(context)=> const HomePage(),
+        '/ahorros':(context)=> const AhorrosPage(),
+        '/presupuestos':(context)=>  PresupuestoPage(),
+        '/metas':(context)=> const MetasPage(),
+        '/registro':(context)=> const RegistroPage(),
       },
     );
   }
@@ -27,19 +34,4 @@ class AhorroTrackApp extends StatelessWidget {
 
 
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-       
-      ),
-      body: const Center(
-
-      
-      ),
-      
-       // This trailing comma makes auto-formatting nicer for build methods.
-    );
-  }
 

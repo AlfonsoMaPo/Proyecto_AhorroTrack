@@ -1,45 +1,58 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
 
+String iniciales(String usuario){
+  return usuario.isNotEmpty?usuario[0].toUpperCase():"U";
+}
   @override
   Widget build(BuildContext context) {
+    final User? usuario = FirebaseAuth.instance.currentUser;
     return Scaffold(
       appBar: AppBar(
         title: const Text('AhorroTrack'),
         backgroundColor: Colors.green.shade600,
       ),
+
       drawer: Drawer(
         child: ListView(
           padding: EdgeInsets.zero,
           children: [
-             const UserAccountsDrawerHeader(
-              decoration: BoxDecoration(
+             UserAccountsDrawerHeader(
+              decoration: const BoxDecoration(
                 color: Colors.blue,
               ),
               accountName: Text(
-                'Usuario',
-                style: TextStyle(
+                usuario?.displayName ?? 'Usuario',
+                style: const TextStyle(
                   color: Colors.white,
                   fontSize: 24,
                 ),
+                
               ),
+              
               accountEmail: Text(
-                'usuario@correo.com',
-                style: TextStyle(
+                usuario?.email??'Usuario@gmail.com',
+                style:const TextStyle(
                   color: Colors.white,
                   fontSize: 16,
                 ),
               ),
-              currentAccountPicture: CircleAvatar(
+              currentAccountPicture:Padding(
+                padding:const EdgeInsets.all(6),
+                child:CircleAvatar(
+                radius: 30,
                 backgroundColor: Colors.white,
                 child: Text(
-                  'U',
-                  style: TextStyle(fontSize: 40.0, color: Colors.blue),
+                  iniciales(usuario?.displayName??'U'),
+                  style:const TextStyle(fontSize: 40.0, color: Colors.blue),
                 ),
               ),
+              )  
             ),
+
             ListTile(
               leading: const Icon(Icons.account_balance_wallet),
               title: const Text('Presupuestos'),
@@ -47,6 +60,7 @@ class HomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/presupuestos');
               },
             ),
+            
             ListTile(
               leading: const Icon(Icons.savings),
               title: const Text('Ahorros'),
@@ -54,6 +68,7 @@ class HomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/ahorros');
               },
             ),
+
             ListTile(
               leading: const Icon(Icons.show_chart),
               title: const Text('Metas'),
@@ -61,33 +76,34 @@ class HomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/metas');
               },
             ),
+
             const Divider(),
-            ListTile(
+            /*ListTile(
               leading: const Icon(Icons.settings),
               title: const Text('Configuración'),
               onTap: () {
-                // Navegar a la página de configuración (a implementar)
+                
               },
             ),
+
             ListTile(
               leading: const Icon(Icons.help),
               title: const Text('Ayuda'),
               onTap: () {
-                // Navegar a la página de ayuda (a implementar)
-              },
-            ),
+              }, 
+            ),*/
             const Divider(),
             ListTile(
               leading: const Icon(Icons.logout),
               title: const Text('Cerrar sesión'),
               onTap: () {
-                // Lógica de logout (a implementar)
                 Navigator.pushReplacementNamed(context, '/');
               },
             ),
           ],
         ),
       ),
+
       body: const Padding(
         padding: EdgeInsets.all(16.0),
         child: Column(

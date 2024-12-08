@@ -23,7 +23,7 @@ class CustomLogin extends StatefulWidget {
 }
 
 class _CustomLoginState extends State<CustomLogin> {
-  bool _obscureText = false;
+  bool _obscureText = true;
 
   @override
   Widget build(BuildContext context) {

@@ -100,6 +100,7 @@ class RegistroPage extends StatelessWidget {
                   ),
                   child: const Text('Registrar', style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
+                
                 TextButton(
                   onPressed: () {
                     Navigator.pop(context); 

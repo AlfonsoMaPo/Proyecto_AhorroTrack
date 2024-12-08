@@ -7,7 +7,7 @@ import 'package:myapp/Pages/presupuesto_page.dart';
 import 'package:myapp/Security/login_page.dart';
 import 'package:myapp/Security/registration.dart';
 
-void main() async {
+main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
   runApp(const AhorroTrackApp());
@@ -22,12 +22,12 @@ class AhorroTrackApp extends StatelessWidget {
       title: 'AhorroTrack',
       initialRoute: '/',
       routes: {
-        '/': (context) => const LoginPage(),
-        '/home': (context) => const HomePage(),
-        '/ahorros': (context) => const AhorrosPage(),
-        '/presupuestos': (context) => PresupuestoPage(),
-        '/metas': (context) => const MetasPage(),
-        '/registro': (context) => const RegistroPage(),
+        '/':(context)=> const LoginPage(),
+        '/home':(context)=> const HomePage(),
+        '/ahorros':(context)=> const AhorrosPage(),
+        '/presupuestos':(context)=> PresupuestoPage(),
+        '/metas':(context)=> const MetasPage(),
+        '/registro':(context)=> const RegistroPage(),
       },
     );
   }

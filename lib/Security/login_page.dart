@@ -11,7 +11,7 @@ class LoginPage extends StatelessWidget {
     final TextEditingController passwordController = TextEditingController();
     final FirebaseAuth auth = FirebaseAuth.instance;
 
-    void login() async {
+    login() async {
       try {
         await auth.signInWithEmailAndPassword(
           email: emailController.text,
@@ -29,26 +29,21 @@ class LoginPage extends StatelessWidget {
       resizeToAvoidBottomInset: true,
       body: Stack(
         children: [
-          Container(
-            decoration: const BoxDecoration(
-              image: DecorationImage(
-                image: AssetImage('assets/images/background.jpg'),
-                fit: BoxFit.cover,
-              ),
-            ),
-          ),
           SingleChildScrollView(
             padding: const EdgeInsets.all(16.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
+              
               children: [
                 const SizedBox(height: 80),
+               
                 const CircleAvatar(
                   radius: 70,
                   backgroundImage: NetworkImage(
                     'https://th.bing.com/th/id/OIP.oQy8D3p7rGB3cNKlQVqFAQHaHa?rs=1&pid=ImgDetMain',
                   ),
                 ),
+
                 const SizedBox(height: 20.0),
                 const Text(
                   '¡Bienvenido a AhorroTrack!',
@@ -59,6 +54,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 10.0),
+                
                 const Text(
                   'Inicia sesión para continuar',
                   style: TextStyle(
@@ -67,6 +63,7 @@ class LoginPage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 20.0),
+                
                 CustomLogin(
                   emailController: emailController,
                   title: 'Correo electrónico',
@@ -75,6 +72,7 @@ class LoginPage extends StatelessWidget {
                   keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 10.0),
+                
                 CustomLogin(
                   emailController: passwordController,
                   title: 'Contraseña',
@@ -83,6 +81,7 @@ class LoginPage extends StatelessWidget {
                   keyboardType: TextInputType.visiblePassword,
                 ),
                 const SizedBox(height: 20.0),
+                
                 ElevatedButton(
                   onPressed: login,
                   style: ElevatedButton.styleFrom(
@@ -94,6 +93,7 @@ class LoginPage extends StatelessWidget {
                   ),
                   child: const Text('Iniciar sesión', style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
+                
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/registro');

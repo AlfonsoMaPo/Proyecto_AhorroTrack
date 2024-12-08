@@ -35,13 +35,13 @@ class _CustomRegistrationState extends State<CustomRegistration> {
       decoration: InputDecoration(
         hintText: 'Ingrese su ${widget.title}',
         label: Text(widget.title),
-        border: OutlineInputBorder(
+        border:const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(20.0), 
           ),
           borderSide: BorderSide(color: Colors.green), 
         ),
-        focusedBorder: OutlineInputBorder(
+        focusedBorder:const OutlineInputBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(20.0), 
           ),

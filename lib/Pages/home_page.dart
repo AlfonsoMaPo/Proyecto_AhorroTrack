@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
+import 'package:myapp/Controllers/presupuesto_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -10,9 +12,11 @@ String iniciales(String usuario){
   @override
   Widget build(BuildContext context) {
     final User? usuario = FirebaseAuth.instance.currentUser;
+     final PresupuestoController presupuestoController = Get.put(PresupuestoController());
+    
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AhorroTrack'),
+        title: const Text('Inicio'),
         backgroundColor: Colors.green.shade600,
       ),
 
@@ -30,7 +34,6 @@ String iniciales(String usuario){
                   color: Colors.white,
                   fontSize: 24,
                 ),
-                
               ),
               
               accountEmail: Text(
@@ -40,6 +43,7 @@ String iniciales(String usuario){
                   fontSize: 16,
                 ),
               ),
+
               currentAccountPicture:Padding(
                 padding:const EdgeInsets.all(6),
                 child:CircleAvatar(
@@ -104,30 +108,26 @@ String iniciales(String usuario){
         ),
       ),
 
-      body:  Padding(
-        padding:const EdgeInsets.all(16.0),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Text(
-              '¡Bienvenid@ ${usuario?.displayName}!',
-              style: const TextStyle(
-                fontSize: 24,
-                fontWeight: FontWeight.bold,
-              ),
-            ),
-            const SizedBox(height: 16),
-             const Card(
-              child: ListTile(
-                leading: Icon(Icons.account_balance_wallet, size: 48),
-                title: Text('Saldo Total'),
-                subtitle: Text('L. 10,000.00'),
-              ),
-            ),
-            const SizedBox(height: 16),
-          ],
-        ),
-      ),
+      body:Obx((){
+        final ultimoPresupuesto = presupuestoController.ultimoPresupuesto.value;
+        if (ultimoPresupuesto == null) {
+         return const Center(
+          child: Text('No hay presupuestos disponibles')
+          );
+        }
+        return Card(
+          child: ListTile( 
+          leading: const Icon(Icons.category),
+          title: Text(ultimoPresupuesto.categoria),
+          subtitle: Text('Gastado: LPS ${ultimoPresupuesto.gastoTotal} / LPS ${ultimoPresupuesto.montoTotal}'),
+          trailing: CircularProgressIndicator(
+            value: ultimoPresupuesto.gastoTotal/ultimoPresupuesto.montoTotal),
+            onTap: () {
+              Navigator.pushNamed(context, '/presupuestos');
+            }
+          ),
+        );
+      }),
     );
   }
 }

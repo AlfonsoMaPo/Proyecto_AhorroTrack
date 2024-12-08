@@ -25,7 +25,7 @@ class AhorroTrackApp extends StatelessWidget {
         '/':(context)=> const LoginPage(),
         '/home':(context)=> const HomePage(),
         '/ahorros':(context)=> const AhorrosPage(),
-        '/presupuestos':(context)=> PresupuestoPage(),
+        '/presupuestos':(context)=> const PresupuestoPage(),
         '/metas':(context)=> const MetasPage(),
         '/registro':(context)=> const RegistroPage(),
       },

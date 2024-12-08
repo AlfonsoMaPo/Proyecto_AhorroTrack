@@ -22,7 +22,7 @@ class RegistroPage extends StatelessWidget {
         Navigator.pushReplacementNamed(context, '/');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(content: Text('Error: ${e}')),
+          SnackBar(content: Text('Error: $e')),
         );
       }
     }

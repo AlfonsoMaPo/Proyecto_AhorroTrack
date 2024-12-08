@@ -104,27 +104,27 @@ String iniciales(String usuario){
         ),
       ),
 
-      body: const Padding(
-        padding: EdgeInsets.all(16.0),
+      body:  Padding(
+        padding:const EdgeInsets.all(16.0),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              '¡Bienvenido a AhorroTrack!',
-              style: TextStyle(
+              '¡Bienvenid@ ${usuario?.displayName}!',
+              style: const TextStyle(
                 fontSize: 24,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16),
-            Card(
+            const SizedBox(height: 16),
+             const Card(
               child: ListTile(
                 leading: Icon(Icons.account_balance_wallet, size: 48),
                 title: Text('Saldo Total'),
                 subtitle: Text('L. 10,000.00'),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
           ],
         ),
       ),

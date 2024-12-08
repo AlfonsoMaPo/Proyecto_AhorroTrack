@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:myapp/Widget/custom_login.dart';
+
+import '../Controllers/presupuesto_controller.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
@@ -17,6 +20,8 @@ class LoginPage extends StatelessWidget {
           email: emailController.text,
           password: passwordController.text,
         );
+        Get.find<PresupuestoController>().getPresupuestos();
+        Get.find<PresupuestoController>().getUltimoPresupuesto();
         Navigator.pushReplacementNamed(context, '/home');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(

@@ -9,6 +9,18 @@ class HomePage extends StatelessWidget {
 String iniciales(String usuario){
   return usuario.isNotEmpty?usuario[0].toUpperCase():"U";
 }
+
+logout(BuildContext context) async {
+  try {
+    await FirebaseAuth.instance.signOut();
+    Get.find<PresupuestoController>().clearData();
+    Navigator.pushReplacementNamed(context, '/');
+    }catch (e) {
+      throw Exception('Error al cerrar sesión: $e');
+    } 
+    
+  }
+
   @override
   Widget build(BuildContext context) {
     final User? usuario = FirebaseAuth.instance.currentUser;
@@ -101,7 +113,7 @@ String iniciales(String usuario){
               leading: const Icon(Icons.logout),
               title: const Text('Cerrar sesión'),
               onTap: () {
-                Navigator.pushReplacementNamed(context, '/');
+                logout(context);
               },
             ),
           ],
@@ -109,23 +121,42 @@ String iniciales(String usuario){
       ),
 
       body:Obx((){
+        
         final ultimoPresupuesto = presupuestoController.ultimoPresupuesto.value;
         if (ultimoPresupuesto == null) {
          return const Center(
           child: Text('No hay presupuestos disponibles')
           );
         }
-        return Card(
-          child: ListTile( 
+        return Column(
+          
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Padding(
+              padding:  EdgeInsets.all(8.0),
+             child: Text(
+              "Último presupuesto guardado:",
+              style: TextStyle(
+              fontSize: 18,
+              fontWeight: FontWeight.bold,
+               ),
+             ),
+            ),
+        Card(
+        child: ListTile(
           leading: const Icon(Icons.category),
           title: Text(ultimoPresupuesto.categoria),
-          subtitle: Text('Gastado: LPS ${ultimoPresupuesto.gastoTotal} / LPS ${ultimoPresupuesto.montoTotal}'),
+          subtitle: Text(
+              'Gastado: LPS ${ultimoPresupuesto.gastoTotal} / LPS ${ultimoPresupuesto.montoTotal}'),
           trailing: CircularProgressIndicator(
-            value: ultimoPresupuesto.gastoTotal/ultimoPresupuesto.montoTotal),
-            onTap: () {
-              Navigator.pushNamed(context, '/presupuestos');
-            }
+            value: (ultimoPresupuesto.gastoTotal / ultimoPresupuesto.montoTotal),
           ),
+          onTap: () {
+            Navigator.pushNamed(context, '/presupuestos');
+          },
+             ),
+           )
+          ],
         );
       }),
     );

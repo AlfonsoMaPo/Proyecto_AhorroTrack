@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:myapp/Models/presupuesto.dart';
 
@@ -9,12 +10,12 @@ class PresupuestoController extends GetxController {
 
   getPresupuestos() async {
     try {
-      final QuerySnapshot snapshot =
-          await baseData.collection('Presupuestos').get();
-      final listaPresupuestos = snapshot.docs
-          .map((doc) =>
-              Presupuesto.fromJson(doc.data() as Map<String, dynamic>, doc.id))
-          .toList();
+      final User? user = FirebaseAuth.instance.currentUser; 
+      if (user == null) throw Exception("Usuario no autenticado");
+
+      final QuerySnapshot snapshot =await baseData.collection('Presupuestos').where('uid',isEqualTo:user.uid).get();
+      final listaPresupuestos = snapshot.docs.map((doc) =>
+              Presupuesto.fromJson(doc.data() as Map<String, dynamic>, doc.id)).toList();
       presupuestos.value = listaPresupuestos;
     } catch (e) {
       throw Exception('Error al obtener los presupuestos');
@@ -30,8 +31,15 @@ class PresupuestoController extends GetxController {
 
   addPresupuestos(Presupuesto presupuestos) async {
     try {
-      await baseData.collection('Presupuestos').add(presupuestos.toJson());
+      final User? user = FirebaseAuth.instance.currentUser; 
+      if (user == null) throw Exception("Usuario no autenticado");
+
+      final nuevoPresupuesto = presupuestos.toJson();
+      nuevoPresupuesto['uid'] = user.uid;
+
+      await baseData.collection('Presupuestos').add(nuevoPresupuesto);
       getPresupuestos();
+      getUltimoPresupuesto();
     } catch (e) {
       throw Exception('No se pudo agregar al presupuesto');
     }
@@ -39,11 +47,9 @@ class PresupuestoController extends GetxController {
 
   actualizarPresupuestos(Presupuesto presupuestos) async {
     try {
-      await baseData
-          .collection('Presupuestos')
-          .doc(presupuestos.id)
-          .update(presupuestos.toJson());
+      await baseData.collection('Presupuestos').doc(presupuestos.id).update(presupuestos.toJson());
       getPresupuestos();
+      getUltimoPresupuesto();
     } catch (e) {
       throw Exception('Error al actualizar los datos');
     }
@@ -53,23 +59,35 @@ class PresupuestoController extends GetxController {
     try {
       await baseData.collection('Presupuestos').doc(id).delete();
       getPresupuestos();
+      getUltimoPresupuesto();
     } catch (e) {
       throw Exception('No se pudo eliminar.');
     }
   }
 
   getUltimoPresupuesto() async {
-  try {
-    final QuerySnapshot snapshot = await baseData.collection('Presupuestos').orderBy(FieldPath.documentId, descending: true).limit(1).get();
-    if (snapshot.docs.isNotEmpty){
-      final doc = snapshot.docs.first;
-      ultimoPresupuesto.value=Presupuesto.fromJson(
-        doc.data() as Map<String, dynamic>, doc.id);
-      }else{
-        ultimoPresupuesto.value= null; 
-      } 
-  }catch(e){
-    throw Exception('No se pudo recuperar.');
-  }  
-  } 
+    try {
+      final User? user = FirebaseAuth.instance.currentUser;
+      if (user == null) throw Exception("Usuario no autenticado");
+      final QuerySnapshot snapshot = 
+        await baseData.collection('Presupuestos').where(
+          'uid', isEqualTo: user.uid).orderBy(
+            FieldPath.documentId, descending: false).limit(1).get();
+      
+      if (snapshot.docs.isNotEmpty) {
+        final doc = snapshot.docs.first;
+        ultimoPresupuesto.value =
+            Presupuesto.fromJson(doc.data() as Map<String, dynamic>, doc.id);
+      } else {
+        ultimoPresupuesto.value = null;
+      }
+    } catch (e) {
+      throw Exception('No se pudo recuperar.');
+    }
+  }
+
+  clearData() {
+     presupuestos.clear();
+     ultimoPresupuesto.value = null; 
+     }
 }

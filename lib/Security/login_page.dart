@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/Widget/custom_login.dart';
 
 class LoginPage extends StatelessWidget {
@@ -6,8 +7,23 @@ class LoginPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final TextEditingController usernameController = TextEditingController();
+    final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
+    final FirebaseAuth auth = FirebaseAuth.instance;
+
+    void login() async {
+      try {
+        await auth.signInWithEmailAndPassword(
+          email: emailController.text,
+          password: passwordController.text,
+        );
+        Navigator.pushReplacementNamed(context, '/home');
+      } catch (e) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Error: Correo o Contraseña incorrecta')),
+        );
+      }
+    }
 
     return Scaffold(
       resizeToAvoidBottomInset: true,
@@ -16,7 +32,7 @@ class LoginPage extends StatelessWidget {
           Container(
             decoration: const BoxDecoration(
               image: DecorationImage(
-                image: AssetImage('assets/images/background.jpg'), 
+                image: AssetImage('assets/images/background.jpg'),
                 fit: BoxFit.cover,
               ),
             ),
@@ -26,9 +42,9 @@ class LoginPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 80), 
+                const SizedBox(height: 80),
                 const CircleAvatar(
-                  radius: 70, 
+                  radius: 70,
                   backgroundImage: NetworkImage(
                     'https://th.bing.com/th/id/OIP.oQy8D3p7rGB3cNKlQVqFAQHaHa?rs=1&pid=ImgDetMain',
                   ),
@@ -52,38 +68,37 @@ class LoginPage extends StatelessWidget {
                 ),
                 const SizedBox(height: 20.0),
                 CustomLogin(
-                  emailController: usernameController,
-                  title: 'Nombre de usuario',
+                  emailController: emailController,
+                  title: 'Correo electrónico',
                   ocupalengthmax: false,
-                  icon: const Icon(Icons.person, color: Colors.green),
+                  icon: const Icon(Icons.email, color: Colors.green),
+                  keyboardType: TextInputType.emailAddress,
                 ),
                 const SizedBox(height: 10.0),
                 CustomLogin(
                   emailController: passwordController,
                   title: 'Contraseña',
                   ocupalengthmax: false,
-                  icon:const Icon(Icons.lock, color: Colors.green),
+                  icon: const Icon(Icons.lock, color: Colors.green),
                   keyboardType: TextInputType.visiblePassword,
                 ),
                 const SizedBox(height: 20.0),
                 ElevatedButton(
-                  onPressed: () {
-                    Navigator.pushReplacementNamed(context, '/home');
-                  },
+                  onPressed: login,
                   style: ElevatedButton.styleFrom(
                     backgroundColor: Colors.orange.shade400,
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
-                    padding:const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
                   ),
-                  child:const Text('Iniciar sesión', style: TextStyle(fontSize: 16, color: Colors.black)),
+                  child: const Text('Iniciar sesión', style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
                 TextButton(
                   onPressed: () {
                     Navigator.pushNamed(context, '/registro');
                   },
-                  child:const Text(
+                  child: const Text(
                     '¿No tienes una cuenta? Regístrate',
                     style: TextStyle(color: Colors.black),
                   ),

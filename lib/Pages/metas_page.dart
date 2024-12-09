@@ -10,6 +10,7 @@ class MetasPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final MetaController metaController = Get.put(MetaController());
+    
 
     return Scaffold(
       appBar: AppBar(
@@ -25,6 +26,9 @@ class MetasPage extends StatelessWidget {
                       TextEditingController();
                   final TextEditingController montoController =
                       TextEditingController();
+                  final TextEditingController progresoController = 
+                      TextEditingController();
+
                   return AlertDialog(
                     title: const Text('Agregar Meta'),
                     content: SingleChildScrollView(
@@ -33,12 +37,14 @@ class MetasPage extends StatelessWidget {
                         child: Column(
                           mainAxisSize: MainAxisSize.min,
                           children: [
+
                             TextField(
                               controller: descripcionController,
                               decoration: const InputDecoration(
                                 labelText: 'Descripción',
                               ),
                             ),
+
                             TextField(
                               controller: montoController,
                               decoration: const InputDecoration(
@@ -46,6 +52,13 @@ class MetasPage extends StatelessWidget {
                               ),
                               keyboardType: TextInputType.number,
                             ),
+                            TextField( 
+                              controller: progresoController, 
+                              decoration: const InputDecoration( 
+                                labelText: 'Progreso', 
+                                ), 
+                              keyboardType: TextInputType.number,
+                               ),
                           ],
                         ),
                       ),
@@ -65,6 +78,7 @@ class MetasPage extends StatelessWidget {
                               id: '',
                               descripcion: descripcionController.text,
                               montoObjetivo: double.parse(montoController.text),
+                              progreso: double.parse(progresoController.text),
                               uid: user.uid,
                             );
                             metaController.addMeta(nuevaMeta);
@@ -91,7 +105,7 @@ class MetasPage extends StatelessWidget {
             final meta = metaController.metas[index];
             return Card(
               child: ListTile(
-                leading:const Icon(Icons.auto_graph),
+                leading: const Icon(Icons.auto_graph),
                 title: Text(meta.descripcion),
                 subtitle: Text('Monto Objetivo: LPS ${meta.montoObjetivo}'),
                 trailing: IconButton(

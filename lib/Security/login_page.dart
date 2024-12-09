@@ -41,7 +41,7 @@ class LoginPage extends StatelessWidget {
            Get.put(MetaController()); 
           } 
            Get.find<MetaController>().getMetas(); 
-             
+          Get.find<MetaController>().getUltimaMeta(); 
            
         Navigator.pushReplacementNamed(context, '/home');
       } catch (e) {

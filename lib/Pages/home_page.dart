@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:myapp/Controllers/ahorro_controller.dart';
+import 'package:myapp/Controllers/meta_controller.dart';
 import 'package:myapp/Controllers/presupuesto_controller.dart';
 
 class HomePage extends StatelessWidget {
@@ -34,7 +36,8 @@ class HomePage extends StatelessWidget {
     final User? usuario = FirebaseAuth.instance.currentUser;
     final PresupuestoController presupuestoController =
         Get.put(PresupuestoController());
-
+  final AhorroController ahorroController = Get.put(AhorroController());
+  
     return Scaffold(
       appBar: AppBar(
         title: const Text('Inicio'),
@@ -123,7 +126,10 @@ class HomePage extends StatelessWidget {
             padding: const EdgeInsets.all(16.0),
             child: Text(
               'Bienvenid@, ${usuario?.displayName ?? 'Usuario'}!',
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(
+              fontSize: 24, 
+              fontWeight: FontWeight.bold
+              ),
             ),
           ),
           Obx(() {
@@ -131,7 +137,8 @@ class HomePage extends StatelessWidget {
                 presupuestoController.ultimoPresupuesto.value;
             if (ultimoPresupuesto == null) {
               return const Center(
-                  child: Text('No hay presupuestos disponibles'));
+                  child: Text('No hay presupuestos disponibles')
+              );
             }
             return Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -164,6 +171,69 @@ class HomePage extends StatelessWidget {
               ],
             );
           }),
+          Obx(() { 
+            final ultimaMeta = Get.find<MetaController>().ultimaMeta.value; 
+            if (ultimaMeta == null) {
+              return const Center(
+                child: Text('No hay metas disponibles')
+                );
+                } return Column(
+                   crossAxisAlignment: CrossAxisAlignment.start, 
+                   children: [ 
+                    const Padding( 
+                      padding: EdgeInsets.all(8.0), 
+                      child: Text( "Última meta guardada:", 
+                      style: TextStyle( 
+                        fontSize: 18, 
+                        fontWeight: 
+                        FontWeight.bold, 
+                      ),
+                    ), 
+                  ), Card(
+                    child: ListTile(
+                      leading: const Icon(Icons.show_chart),
+                      title: Text(ultimaMeta.descripcion),
+                     subtitle: Text( 'Progreso: ${ultimaMeta.progreso}/${ultimaMeta.montoObjetivo}'), 
+                     trailing: CircularProgressIndicator( 
+                      value: (ultimaMeta.progreso / ultimaMeta.montoObjetivo), 
+                      ), 
+                     onTap: () { 
+                      Navigator.pushNamed(context, '/metas'); 
+                      },
+                    ), 
+                  ), 
+                ], 
+              ); 
+          }),Obx(() { 
+            final ultimoAhorro = ahorroController.ultimoAhorro.value; 
+            if (ultimoAhorro == null) { 
+              return const Center(
+                child: Text('No hay ahorros disponibles')
+                ); 
+                } return Column( 
+                  crossAxisAlignment: CrossAxisAlignment.start, 
+                  children: [ const Padding(
+                     padding: EdgeInsets.all(8.0),
+                      child: Text( "Último ahorro guardado:", 
+                      style: TextStyle( 
+                        fontSize: 18, 
+                        fontWeight: FontWeight.bold, 
+                      ), 
+                    ), 
+                  ), 
+                Card( 
+                child: ListTile( 
+                leading: const Icon(Icons.savings), 
+                title: Text(ultimoAhorro.categoria),
+                subtitle: Text( 'Monto: LPS ${ultimoAhorro.monto} / Meses: ${ultimoAhorro.meses}'), 
+                onTap: () { 
+                  Navigator.pushNamed(context, '/ahorros'); 
+              }, 
+             ), 
+           ), 
+          ],
+         );
+        }),
         ],
       ),
     );

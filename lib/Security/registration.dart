@@ -14,7 +14,7 @@ class RegistroPage extends StatelessWidget {
 
     registro() async {
       try {
-        UserCredential credencial=await auth.createUserWithEmailAndPassword(
+        UserCredential credencial = await auth.createUserWithEmailAndPassword(
           email: emailController.text,
           password: passwordController.text,
         );
@@ -36,9 +36,9 @@ class RegistroPage extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                const SizedBox(height: 80), 
+                const SizedBox(height: 80),
                 const CircleAvatar(
-                  radius: 70, 
+                  radius: 70,
                   backgroundImage: NetworkImage(
                     'https://th.bing.com/th/id/OIP.oQy8D3p7rGB3cNKlQVqFAQHaHa?rs=1&pid=ImgDetMain',
                   ),
@@ -52,7 +52,6 @@ class RegistroPage extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-
                 const SizedBox(height: 10.0),
                 const Text(
                   'Crea una cuenta para comenzar',
@@ -61,7 +60,6 @@ class RegistroPage extends StatelessWidget {
                     color: Colors.black,
                   ),
                 ),
-
                 const SizedBox(height: 20.0),
                 CustomRegistration(
                   controller: userController,
@@ -69,7 +67,6 @@ class RegistroPage extends StatelessWidget {
                   ocupalengthmax: false,
                   icon: const Icon(Icons.person, color: Colors.green),
                 ),
-
                 const SizedBox(height: 10.0),
                 CustomRegistration(
                   controller: emailController,
@@ -78,7 +75,6 @@ class RegistroPage extends StatelessWidget {
                   icon: const Icon(Icons.email, color: Colors.green),
                   keyboardType: TextInputType.emailAddress,
                 ),
-
                 const SizedBox(height: 10.0),
                 CustomRegistration(
                   controller: passwordController,
@@ -87,7 +83,6 @@ class RegistroPage extends StatelessWidget {
                   icon: const Icon(Icons.lock, color: Colors.green),
                   keyboardType: TextInputType.visiblePassword,
                 ),
-
                 const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: registro,
@@ -96,14 +91,15 @@ class RegistroPage extends StatelessWidget {
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(20.0),
                     ),
-                    padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 15),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 40, vertical: 15),
                   ),
-                  child: const Text('Registrar', style: TextStyle(fontSize: 16, color: Colors.black)),
+                  child: const Text('Registrar',
+                      style: TextStyle(fontSize: 16, color: Colors.black)),
                 ),
-                
                 TextButton(
                   onPressed: () {
-                    Navigator.pop(context); 
+                    Navigator.pop(context);
                   },
                   child: const Text(
                     '¿Ya tienes una cuenta? Inicia sesión',

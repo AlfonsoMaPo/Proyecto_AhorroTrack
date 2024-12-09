@@ -3,9 +3,11 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:get/get.dart';
 import 'package:myapp/Controllers/presupuesto_controller.dart';
 import 'package:myapp/Pages/ahorros_page.dart';
+import 'package:myapp/Pages/historial_crediticiopage.dart';
 import 'package:myapp/Pages/home_page.dart';
 import 'package:myapp/Pages/metas_page.dart';
 import 'package:myapp/Pages/presupuesto_page.dart';
+import 'package:myapp/Pages/retos_page.dart';
 import 'package:myapp/Security/login_page.dart';
 import 'package:myapp/Security/registration.dart';
 
@@ -31,6 +33,8 @@ class AhorroTrackApp extends StatelessWidget {
         '/presupuestos':(context)=> const PresupuestoPage(),
         '/metas':(context)=> const MetasPage(),
         '/registro':(context)=> const RegistroPage(),
+        '/historial':(context)=> const HistorialCrediticioPage(),
+        '/retos':(context)=> const RetosFinancierosPage(),
       },
     );
   }

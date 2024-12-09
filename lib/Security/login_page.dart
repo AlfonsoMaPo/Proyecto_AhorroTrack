@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:myapp/Controllers/ahorro_controller.dart';
 import 'package:myapp/Controllers/meta_controller.dart';
 import 'package:myapp/Controllers/presupuesto_controller.dart';
+import 'package:myapp/Controllers/reto_controller.dart';
 import 'package:myapp/Widget/custom_login.dart';
 
 
@@ -15,6 +16,18 @@ class LoginPage extends StatelessWidget {
     if (!Get.isRegistered<PresupuestoController>()) {
       Get.put(PresupuestoController());
     }
+    if (!Get.isRegistered<AhorroController>()) {
+           Get.put(AhorroController()); 
+          } 
+    if (!Get.isRegistered<MetaController>()) {
+           Get.put(MetaController()); 
+          } 
+    if (!Get.isRegistered<RetoFinancieroController>()) {
+           Get.put(RetoFinancieroController()); 
+          }         
+
+
+
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -25,23 +38,14 @@ class LoginPage extends StatelessWidget {
           email: emailController.text,
           password: passwordController.text,
         );
-        if (!Get.isRegistered<PresupuestoController>()) {
-        Get.put(PresupuestoController());
-        }
+        
         Get.find<PresupuestoController>().getPresupuestos();
         Get.find<PresupuestoController>().getUltimoPresupuesto();
-
-        if (!Get.isRegistered<AhorroController>()) {
-           Get.put(AhorroController()); 
-          } 
-           Get.find<AhorroController>().getAhorros(); 
-           Get.find<AhorroController>().getUltimoAhorro();
-
-        if (!Get.isRegistered<MetaController>()) {
-           Get.put(MetaController()); 
-          } 
-           Get.find<MetaController>().getMetas(); 
-          Get.find<MetaController>().getUltimaMeta(); 
+        Get.find<AhorroController>().getAhorros(); 
+        Get.find<AhorroController>().getUltimoAhorro();
+        Get.find<MetaController>().getMetas(); 
+        Get.find<MetaController>().getUltimaMeta(); 
+        Get.find<RetoFinancieroController>().getRetosFinancieros();
            
         Navigator.pushReplacementNamed(context, '/home');
       } catch (e) {

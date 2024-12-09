@@ -32,6 +32,7 @@ class CustomPresupuesto extends StatelessWidget {
           const SnackBar(
               content: Text('Por favor, ingresa un monto total válido')),
         );
+
         return false;
       }
       if (gastoTotalController.text.isEmpty ||
@@ -40,6 +41,12 @@ class CustomPresupuesto extends StatelessWidget {
           const SnackBar(
               content: Text('Por favor, ingresa un gasto actual válido')),
         );
+        if (double.parse(gastoTotalController.text) < 0) {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+                content: Text('El gasto actual no puede ser negativo')),
+          );
+        }
         return false;
       }
       return true;
@@ -60,55 +67,48 @@ class CustomPresupuesto extends StatelessWidget {
                   labelText: 'Categoría',
                   border: OutlineInputBorder(),
                   prefixIcon: Icon(Icons.category),
-                )
-            ),
-
+                )),
             const SizedBox(height: 20),
-
             TextField(
-                controller: montoTotalController,
-                decoration: const InputDecoration(
-                  labelText: 'Monto Total',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.attach_money),
-                ),
-                keyboardType: TextInputType.number,
+              controller: montoTotalController,
+              decoration: const InputDecoration(
+                labelText: 'Monto Total',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.attach_money),
+              ),
+              keyboardType: TextInputType.number,
             ),
-
             const SizedBox(height: 20),
-
             TextField(
-                controller: gastoTotalController,
-                decoration: const InputDecoration(
-                  labelText: 'Gasto Total',
-                  border: OutlineInputBorder(),
-                  prefixIcon: Icon(Icons.money_off),
-                ),
-                keyboardType: TextInputType.number,
+              controller: gastoTotalController,
+              decoration: const InputDecoration(
+                labelText: 'Gasto Total',
+                border: OutlineInputBorder(),
+                prefixIcon: Icon(Icons.money_off),
+              ),
+              keyboardType: TextInputType.number,
             ),
-
-            const SizedBox(height:20),
-
+            const SizedBox(height: 20),
             ElevatedButton(
-              onPressed:(){
-                if(validarFormulario()){
-                  final nuevoPresupuesto = Presupuesto( 
+              onPressed: () {
+                if (validarFormulario()) {
+                  final nuevoPresupuesto = Presupuesto(
                     id: supuesto?.id ?? '',
                     categoria: categoriaController.text,
                     montoTotal: double.parse(montoTotalController.text),
                     gastoTotal: double.parse(gastoTotalController.text),
                   );
                   if (supuesto == null) {
-                   presupuestoController.addPresupuestos(nuevoPresupuesto); 
-                  }else { 
-                    presupuestoController.actualizarPresupuestos(nuevoPresupuesto);
-                  } 
-                  Navigator.of(context).pop(); }
+                    presupuestoController.addPresupuestos(nuevoPresupuesto);
+                  } else {
+                    presupuestoController
+                        .actualizarPresupuestos(nuevoPresupuesto);
+                  }
+                  Navigator.of(context).pop();
+                }
               },
-              child: Text(
-                supuesto == null ? 'Agregar' : 'Guardar Cambios'
-                ),
-              ),
+              child: Text(supuesto == null ? 'Agregar' : 'Guardar Cambios'),
+            ),
           ],
         ),
       ),

@@ -103,7 +103,7 @@ class AhorrosPage extends StatelessWidget {
             final ahorro = ahorroController.ahorros[index];
             return Card(
               child: ListTile(
-                leading: const Icon(Icons.savings),
+                leading: const Icon(Icons.savings,color:Colors.pinkAccent),
                 title: Text('Monto: LPS ${ahorro.monto}'),
                 subtitle: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -113,7 +113,7 @@ class AhorrosPage extends StatelessWidget {
                   ],
                 ),
                 trailing: IconButton(
-                  icon: const Icon(Icons.delete),
+                  icon: const Icon(Icons.delete,color: Colors.red,),
                   onPressed: () {
                     ahorroController.eliminarAhorro(ahorro.id);
                   },

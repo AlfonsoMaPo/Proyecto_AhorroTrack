@@ -4,6 +4,7 @@ import 'package:get/get.dart';
 import 'package:myapp/Controllers/ahorro_controller.dart';
 import 'package:myapp/Controllers/meta_controller.dart';
 import 'package:myapp/Controllers/presupuesto_controller.dart';
+import 'package:myapp/Controllers/reto_controller.dart';
 
 class HomePage extends StatelessWidget {
   const HomePage({super.key});
@@ -16,6 +17,9 @@ class HomePage extends StatelessWidget {
     try {
       await FirebaseAuth.instance.signOut();
       Get.find<PresupuestoController>().clearData();
+      Get.find<MetaController>().clearData();
+      Get.find<AhorroController>().clearDataahorro();
+      Get.find<RetoFinancieroController>().clearRetoData();
       Navigator.pushReplacementNamed(context, '/');
     } catch (e) {
       throw Exception('Error al cerrar sesión: $e');
@@ -25,7 +29,7 @@ class HomePage extends StatelessWidget {
   switchAccount(BuildContext context) async {
     try {
       await FirebaseAuth.instance.signOut();
-      Navigator.pushReplacementNamed(context, '/login');
+      Navigator.pushReplacementNamed(context, '/');
     } catch (e) {
       throw Exception('Error al cambiar de cuenta: $e');
     }
@@ -40,7 +44,11 @@ class HomePage extends StatelessWidget {
   
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Inicio'),
+        title: const Text('Inicio',
+        style: TextStyle(
+          fontWeight: FontWeight.bold
+        ),
+        ),
         backgroundColor: Colors.green.shade600,
       ),
       drawer: Drawer(
@@ -99,7 +107,23 @@ class HomePage extends StatelessWidget {
                 Navigator.pushNamed(context, '/metas');
               },
             ),
+            ListTile( 
+            leading: const Icon(Icons.history), 
+            title: const Text('Historial Crediticio'), 
+            onTap: () { 
+              Navigator.pushNamed(context, '/historial'); 
+              },
+            ),
+            ListTile(
+               leading: const Icon(Icons.task), 
+               title: const Text('Retos Financieros'), 
+               onTap: () { 
+                Navigator.pushNamed(context, '/retos'); 
+                }, 
+            ),
+
             const Divider(),
+
             ListTile(
               leading: const Icon(Icons.switch_access_shortcut_rounded),
               title: const Text('Cambiar cuenta'),
@@ -160,8 +184,8 @@ class HomePage extends StatelessWidget {
                     subtitle: Text(
                         'Gastado: LPS ${ultimoPresupuesto.gastoTotal} / LPS ${ultimoPresupuesto.montoTotal}'),
                     trailing: CircularProgressIndicator(
-                      value: (ultimoPresupuesto.gastoTotal /
-                          ultimoPresupuesto.montoTotal),
+                      value: (ultimoPresupuesto.gastoTotal/ultimoPresupuesto.montoTotal), 
+                      color: (ultimoPresupuesto.gastoTotal>ultimoPresupuesto.montoTotal) ? Colors.red : Colors.green,
                     ),
                     onTap: () {
                       Navigator.pushNamed(context, '/presupuestos');
@@ -193,14 +217,16 @@ class HomePage extends StatelessWidget {
                     child: ListTile(
                       leading: const Icon(Icons.show_chart),
                       title: Text(ultimaMeta.descripcion),
-                     subtitle: Text( 'Progreso: ${ultimaMeta.progreso}/${ultimaMeta.montoObjetivo}'), 
-                     trailing: CircularProgressIndicator( 
-                      value: (ultimaMeta.progreso / ultimaMeta.montoObjetivo), 
-                      ), 
-                     onTap: () { 
-                      Navigator.pushNamed(context, '/metas'); 
-                      },
-                    ), 
+                      subtitle: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text('Progreso: LPS ${ultimaMeta.progreso} / LPS ${ultimaMeta.montoObjetivo}'),
+                          LinearProgressIndicator(
+                            value: ultimaMeta.progreso / ultimaMeta.montoObjetivo,
+                          ),
+                        ],
+                      ),
+                    ),
                   ), 
                 ], 
               ); 

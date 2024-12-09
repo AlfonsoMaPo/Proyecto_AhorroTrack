@@ -105,16 +105,19 @@ class MetasPage extends StatelessWidget {
             final meta = metaController.metas[index];
             return Card(
               child: ListTile(
-                leading: const Icon(Icons.auto_graph),
-                title: Text(meta.descripcion),
-                subtitle: Text('Monto Objetivo: LPS ${meta.montoObjetivo}'),
-                trailing: IconButton(
-                  icon: const Icon(Icons.delete),
-                  onPressed: () {
-                    metaController.eliminarMeta(meta.id);
-                  },
-                ),
-              ),
+                  leading: const Icon(Icons.show_chart),
+                  title: Text(meta.descripcion),
+                  subtitle: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                        Text('Progreso: LPS ${meta.progreso} / LPS ${meta.montoObjetivo}'),
+                        LinearProgressIndicator(
+                        value: (meta.progreso / meta.montoObjetivo),
+                          ),
+                          const SizedBox(height: 12)
+                        ],
+                      ),
+                    ),
             );
           },
         );

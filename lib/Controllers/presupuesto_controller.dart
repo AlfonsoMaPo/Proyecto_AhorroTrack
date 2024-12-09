@@ -41,6 +41,10 @@ class PresupuestoController extends GetxController {
 
   addPresupuestos(Presupuesto presupuestos) async {
     try {
+      if (presupuestos.gastoTotal < 0 || presupuestos.montoTotal < 0) {
+         throw Exception("Los valores no pueden ser negativos.");
+         }
+
       final User? user = FirebaseAuth.instance.currentUser; 
       if (user == null) throw Exception("Usuario no autenticado");
 
@@ -57,6 +61,10 @@ class PresupuestoController extends GetxController {
 
   actualizarPresupuestos(Presupuesto presupuestos) async {
     try {
+      if (presupuestos.gastoTotal < 0 || presupuestos.montoTotal < 0) { 
+        throw Exception("Los valores no pueden ser negativos."); 
+        }
+        
       await baseData.collection('Presupuestos').doc(presupuestos.id).update(presupuestos.toJson());
       getPresupuestos();
       getUltimoPresupuesto();

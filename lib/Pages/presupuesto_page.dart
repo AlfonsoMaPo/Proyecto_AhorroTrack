@@ -99,11 +99,11 @@ class PresupuestoPage extends StatelessWidget {
                         'Gastado: LPS ${supuesto.gastoTotal}/${supuesto.montoTotal}'),
                     trailing: Row(
                       mainAxisSize: MainAxisSize.min,
-                      children: [
-                        CircularProgressIndicator(
-                          value: supuesto.gastoTotal / supuesto.montoTotal,
-                          
-                        ),
+                      children: [CircularProgressIndicator(
+                      value: (supuesto.gastoTotal/supuesto.montoTotal), 
+                      color: (supuesto.gastoTotal>supuesto.montoTotal) ? Colors.red : Colors.green,
+                    ),
+                        
 
                       ],
                     )

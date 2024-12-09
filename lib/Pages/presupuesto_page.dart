@@ -91,7 +91,7 @@ class PresupuestoPage extends StatelessWidget {
                   );
                 }
               },
-              child:  Card(
+              child: Card(
                 child: ListTile(
                     leading: const Icon(Icons.category),
                     title: Text(supuesto.categoria),

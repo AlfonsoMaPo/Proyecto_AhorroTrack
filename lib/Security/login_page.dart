@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
+import 'package:myapp/Controllers/ahorro_controller.dart';
+import 'package:myapp/Controllers/meta_controller.dart';
+import 'package:myapp/Controllers/presupuesto_controller.dart';
 import 'package:myapp/Widget/custom_login.dart';
 
-import '../Controllers/presupuesto_controller.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});
 
   @override
   Widget build(BuildContext context) {
+    if (!Get.isRegistered<PresupuestoController>()) {
+      Get.put(PresupuestoController());
+    }
     final TextEditingController emailController = TextEditingController();
     final TextEditingController passwordController = TextEditingController();
     final FirebaseAuth auth = FirebaseAuth.instance;
@@ -20,12 +25,28 @@ class LoginPage extends StatelessWidget {
           email: emailController.text,
           password: passwordController.text,
         );
+        if (!Get.isRegistered<PresupuestoController>()) {
+        Get.put(PresupuestoController());
+        }
         Get.find<PresupuestoController>().getPresupuestos();
         Get.find<PresupuestoController>().getUltimoPresupuesto();
+
+        if (!Get.isRegistered<AhorroController>()) {
+           Get.put(AhorroController()); 
+          } 
+           Get.find<AhorroController>().getAhorros(); 
+           Get.find<AhorroController>().getUltimoAhorro();
+
+        if (!Get.isRegistered<MetaController>()) {
+           Get.put(MetaController()); 
+          } 
+           Get.find<MetaController>().getMetas(); 
+             
+           
         Navigator.pushReplacementNamed(context, '/home');
       } catch (e) {
         ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Error: Correo o Contraseña incorrecta')),
+           SnackBar(content: Text(e.toString())),
         );
       }
     }

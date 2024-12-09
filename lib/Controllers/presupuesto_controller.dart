@@ -3,10 +3,25 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:get/get.dart';
 import 'package:myapp/Models/presupuesto.dart';
 
+
 class PresupuestoController extends GetxController {
   final RxList<Presupuesto> presupuestos = <Presupuesto>[].obs;
   final FirebaseFirestore baseData = FirebaseFirestore.instance;
   final Rx<Presupuesto?> ultimoPresupuesto = Rx<Presupuesto?>(null);
+
+@override onInit() { 
+  super.onInit(); 
+  final User? user = FirebaseAuth.instance.currentUser; 
+  if (user == null) {  
+    Future.delayed(Duration.zero, () { 
+      Get.toNamed('/'); 
+     }); } 
+     else { 
+      getPresupuestos(); 
+      getUltimoPresupuesto(); 
+      }
+
+  }
 
   getPresupuestos() async {
     try {
@@ -18,16 +33,11 @@ class PresupuestoController extends GetxController {
               Presupuesto.fromJson(doc.data() as Map<String, dynamic>, doc.id)).toList();
       presupuestos.value = listaPresupuestos;
     } catch (e) {
-      throw Exception('Error al obtener los presupuestos');
+      throw Exception(e.toString());
     }
   }
 
-  @override
-  onInit() {
-    super.onInit();
-    getPresupuestos();
-    getUltimoPresupuesto();
-  }
+  
 
   addPresupuestos(Presupuesto presupuestos) async {
     try {

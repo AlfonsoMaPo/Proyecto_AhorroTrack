@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:get/get.dart';
+import 'package:myapp/Controllers/presupuesto_controller.dart';
 import 'package:myapp/Pages/ahorros_page.dart';
 import 'package:myapp/Pages/home_page.dart';
 import 'package:myapp/Pages/metas_page.dart';
@@ -10,6 +12,7 @@ import 'package:myapp/Security/registration.dart';
 main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
+  Get.put(PresupuestoController());
   runApp(const AhorroTrackApp());
 }
 

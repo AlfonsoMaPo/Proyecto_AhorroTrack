@@ -1,6 +1,6 @@
-# myapp
+# AhorroTrack
 
-A new Flutter project.
+Este proyecto final trata sobre mantener un control sobre tus finanzas basicas con la ayuda de creacion de registros.
 
 ## Getting Started
 
